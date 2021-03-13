@@ -1,31 +1,44 @@
+import React from 'react';
+
 import { NextPage } from 'next';
 import Head from 'next/head';
-
 import * as Tone from 'tone';
-import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+type SynthProps = {
+  note: Tone.Unit.Frequency;
+  dur: Tone.Unit.Time;
+};
+
+const MonoSynth: React.FC<SynthProps> = ({ note, dur }) => {
   const handleSynth = () => {
-    const osc = new Tone.Oscillator().toDestination();
-    osc.frequency.value = 'C4';
-    osc.frequency.rampTo('C7', 2);
-    osc.start().stop('+3');
+    const synth = new Tone.Synth().toDestination();
+    synth.triggerAttackRelease(note, dur);
   };
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Next + tone</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <button type="button" onClick={handleSynth}>
-          play synth
-        </button>
-      </main>
-    </div>
+    <button type="button" onClick={handleSynth}>
+      {note}
+    </button>
   );
 };
+
+const Home: NextPage = () => (
+  <div>
+    <Head>
+      <title>Next + tone</title>
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+
+    <main>
+      <MonoSynth note="C4" dur="8n" />
+      <MonoSynth note="D4" dur="8n" />
+      <MonoSynth note="E4" dur="8n" />
+      <MonoSynth note="F4" dur="8n" />
+      <MonoSynth note="G4" dur="8n" />
+      <MonoSynth note="A4" dur="8n" />
+      <MonoSynth note="B4" dur="8n" />
+    </main>
+  </div>
+);
 
 export default Home;
